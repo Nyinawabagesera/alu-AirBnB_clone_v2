@@ -1,1 +1,1 @@
-# alu-AirBnB_clone_v2
+Nyinawabagesera Jacqueline and Roxanne Niteka
