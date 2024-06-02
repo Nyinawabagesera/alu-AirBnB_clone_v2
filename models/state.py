@@ -1,36 +1,26 @@
 #!/usr/bin/python3
-"""This is the state class"""
-from sqlalchemy.ext.declarative import declarative_base
+""" holds class State"""
 from models.base_model import BaseModel, Base
+from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, String
 import models
 from models.city import City
-import shlex
 
 
 class State(BaseModel, Base):
-    """This is the class for State
-    Attributes:
-        name: input name
-    """
-    __tablename__ = "states"
-    name = Column(String(128), nullable=False)
-    cities = relationship("City", cascade='all, delete, delete-orphan',
-                          backref="state")
+    """Representation of state """
+    if models.storage_type == "db":
+        __tablename__ = "states"
 
-    @property
-    def cities(self):
-        var = models.storage.all()
-        lista = []
-        result = []
-        for key in var:
-            city = key.replace('.', ' ')
-            city = shlex.split(city)
-            if (city[0] == 'City'):
-                lista.append(var[key])
-        for elem in lista:
-            if (elem.state_id == self.id):
-                result.append(elem)
-        return (result)
-    
+        name = Column(String(128),
+                      nullable=False)
+        cities = relationship("City",
+                              backref="state",
+                              cascade="delete")
+    else:
+        name = ""
+
+        @property
+        def cities(self):
+            all_cities = list(models.storage.all(City).values())
+            return list(filter((lambda c: c.state_id == self.id), all_cities))
