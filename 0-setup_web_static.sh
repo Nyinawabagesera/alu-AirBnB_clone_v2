@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-<<<<<<< HEAD
+<<<<<<< HEAD 
 # Script using bash to setup webservers for deployment of simple HTML
 # content
 
